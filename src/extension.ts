@@ -1,36 +1,12 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 const spawnCommand = require('spawn-command');
-// this method is called when your extension is activated
-// your extension is activated the very first time the command is executed
 function run(cmd: string, options: any) {
 	return new Promise((accept, reject) => {
 		var opts: any = {};
 		let process = spawnCommand(cmd, options);
 
 		process.stdout.on('data', () => {
-			vscode.window.withProgress({
-				location: vscode.ProgressLocation.Notification,
-				title: "I am long running!",
-				cancellable: true
-			}, (progress, token) => {
-				token.onCancellationRequested(() => {
-					console.log("User canceled the long running operation");
-				});
-
-				progress.report({ increment: 0, message: "Your Project is being Created" });
-
-
-
-				var p = new Promise(resolve => {
-					setTimeout(() => {
-						resolve();
-					}, 5000);
-				});
-
-				return p;
-			});
+			vscode.window.showInformationMessage("Your Project is being created");
 		});
 		process.stderr.on('data', (err: any) => {
 			vscode.window.showInformationMessage(err);
@@ -85,7 +61,12 @@ export function activate(context: vscode.ExtensionContext) {
 				else if (selection.label === "Django") {
 					run(`django-admin startproject ${result}`, options);
 				}
-
+				else if (selection.label === "Flutter") {
+					run(`flutter create ${result}`, options);
+				}
+				else if (selection.label === "Vue") {
+					run(`vue create ${result}`, options);
+				}
 
 
 
