@@ -1,8 +1,16 @@
 import * as vscode from "vscode";
+import {
+  htmlString,
+  cssString,
+  scriptString,
+  extensionHtml
+} from "./constants";
 const spawnCommand = require("spawn-command");
+const fs = require("fs");
+const path = require("path");
+
 function run(cmd: string, options: any) {
   return new Promise((accept, reject) => {
-    var opts: any = {};
     let process = spawnCommand(cmd, options);
 
     process.stdout.on("data", () => {
@@ -11,7 +19,12 @@ function run(cmd: string, options: any) {
     process.stderr.on("data", (err: any) => {
       vscode.window.showInformationMessage(err);
     });
-    process.on("exit", () => {
+    process.on("exit", (status: any) => {
+      if (status) {
+        reject("Eror");
+      } else {
+        accept();
+      }
       vscode.window.showInformationMessage("Project Created Succesfully");
     });
   });
@@ -31,21 +44,9 @@ export function activate(context: vscode.ExtensionContext) {
     "HTML",
     "Chrome Extension"
   ];
-  // Use the console to output diagnostic information (console.log) and errors (console.error)
-  // This line of code will only be executed once when your extension is activated
-  console.log(
-    'Congratulations, your extension "boilerplate-generator" is now active!'
-  );
-
-  // The command has been defined in the package.json file
-  // Now provide the implementation of the command with registerCommand
-  // The commandId parameter must match the command field in package.json
   let disposable = vscode.commands.registerCommand(
-    "extension.helloWorld",
+    "extension.boilerplate",
     () => {
-      // The code you place here will be executed every time your command is executed
-
-      // Display a message box to the user
       let cwd = vscode.workspace.rootPath;
       const options: any = {};
       options.cwd = cwd;
@@ -59,10 +60,9 @@ export function activate(context: vscode.ExtensionContext) {
         if (selection) {
           vscode.window.showInformationMessage(selection.label);
           const result = await vscode.window.showInputBox({
-            value: "abcdef",
-            valueSelection: [2, 4],
-            placeHolder: "For example: fedcba. But not: 123"
+            value: "abcdef"
           });
+          const readme = `## ${result}`;
           if (selection.label === "React JS") {
             run(`npx create-react-app ${result}`, options);
             console.log("hi");
@@ -70,11 +70,105 @@ export function activate(context: vscode.ExtensionContext) {
             run(
               `django-admin startproject ${result} && cd ${result} &&django-admin startapp ${result}_app`,
               options
-            );
+            ).then(() => {
+              fs.writeFile(
+                path.join(cwd, result, "README.md"),
+                readme,
+                (err: any) => {
+                  if (err) {
+                    return vscode.window.showErrorMessage(
+                      "Unexpected Error Occured"
+                    );
+                  }
+                }
+              );
+            });
           } else if (selection.label === "Flutter") {
             run(`flutter create ${result}`, options);
           } else if (selection.label === "Vue") {
             run(`vue create ${result}`, options);
+          } else if (selection.label === "HTML") {
+            run(`mkdir ${result} && cd ${result}`, options)
+              .then(() => {
+                fs.writeFile(
+                  path.join(cwd, result, "index.html"),
+                  htmlString,
+                  (err: any) => {
+                    if (err) {
+                      return vscode.window.showErrorMessage(
+                        "Unexpected Error Occured !"
+                      );
+                    }
+                  }
+                );
+              })
+              .then(() => {
+                fs.writeFile(
+                  path.join(cwd, result, "style.css"),
+                  cssString,
+                  (err: any) => {
+                    if (err) {
+                      return vscode.window.showErrorMessage(
+                        "Unexpected Error Code"
+                      );
+                    }
+                  }
+                );
+              })
+              .then(() => {
+                fs.writeFile(
+                  path.join(cwd, result, "script.js"),
+                  scriptString,
+                  (err: any) => {
+                    if (err) {
+                      return vscode.window.showErrorMessage(
+                        "Unexpected Error Occured"
+                      );
+                    }
+                  }
+                );
+              })
+              .then(() => {
+                fs.writeFile(
+                  path.join(cwd, result, "README.md"),
+                  readme,
+                  (err: any) => {
+                    if (err) {
+                      return vscode.window.showErrorMessage(
+                        "Unexpected Error Occured"
+                      );
+                    }
+                  }
+                );
+              });
+          } else if (selection.label === "Chrome Extension") {
+            run(`mkdir ${result} && cd ${result}`, options)
+              .then(() => {
+                fs.writeFile(
+                  path.join(cwd, result, "popup.html"),
+                  extensionHtml,
+                  (err: any) => {
+                    if (err) {
+                      return vscode.window.showErrorMessage(
+                        "Unexpected Error Occured !"
+                      );
+                    }
+                  }
+                );
+              })
+              .then(() => {
+                fs.writeFile(
+                  path.join(cwd, result, "README.md"),
+                  readme,
+                  (err: any) => {
+                    if (err) {
+                      return vscode.window.showErrorMessage(
+                        "Unexpected Error Occured"
+                      );
+                    }
+                  }
+                );
+              });
           }
         }
       });
@@ -85,6 +179,4 @@ export function activate(context: vscode.ExtensionContext) {
 
   context.subscriptions.push(disposable);
 }
-
-// this method is called when your extension is deactivated
 export function deactivate() {}
