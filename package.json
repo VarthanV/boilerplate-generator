@@ -1,13 +1,13 @@
 {
 	"name": "boilerplate-generator",
-	"displayName": "boilerplate-generator",
+	"displayName": "BoilerPlate Generator",
 	"description": "Generate Boiler Plate Code for Various frameworks and Languages",
 	"publisher": "vich006",
 	"repository": {
         "type": "git",
         "url": "https://github.com/VarthanV/boilerpate-generator"
     },
-	"version": "0.0.1",
+	"version": "1.0.0",
 	"engines": {
 		"vscode": "^1.43.0"
 	},
