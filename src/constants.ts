@@ -39,7 +39,7 @@ window.onload = ()=>{
 }
 
 `;
-export const extensionHtml=`   
+export const extensionHtml = `   
 <!DOCTYPE html>
 <html>
   <head>
@@ -102,4 +102,12 @@ export const extensionHtml=`
     <script src="popup.js"></script>
   </body>
 </html>
+`;
+export const popupJS = `
+
+function disp() {
+    document.getElementById('text').innerHTML = Sample Chrome Extension Project ;
+}
+window.addEventListener('load', disp());
+
 `;

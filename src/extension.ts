@@ -3,7 +3,8 @@ import {
   htmlString,
   cssString,
   scriptString,
-  extensionHtml
+  extensionHtml,
+  popupJS
 } from "./constants";
 const spawnCommand = require("spawn-command");
 const fs = require("fs");
@@ -147,6 +148,19 @@ export function activate(context: vscode.ExtensionContext) {
                 fs.writeFile(
                   path.join(cwd, result, "popup.html"),
                   extensionHtml,
+                  (err: any) => {
+                    if (err) {
+                      return vscode.window.showErrorMessage(
+                        "Unexpected Error Occured !"
+                      );
+                    }
+                  }
+                );
+              })
+              .then(() => {
+                fs.writeFile(
+                  path.join(cwd, result, "popup.js"),
+                  popupJS,
                   (err: any) => {
                     if (err) {
                       return vscode.window.showErrorMessage(
