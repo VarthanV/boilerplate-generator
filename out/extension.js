@@ -25,7 +25,7 @@ function run(cmd, options) {
         });
         process.on("exit", (status) => {
             if (status) {
-                reject("Eror");
+                reject("Error");
             }
             else {
                 accept();
@@ -52,25 +52,27 @@ function activate(context) {
         let cwd = vscode.workspace.rootPath;
         const options = {};
         options.cwd = cwd;
-        vscode.window.showInformationMessage("Hello Worlddd");
         const quickPick = vscode.window.createQuickPick();
         quickPick.items = frameWorksSupported.map((elem) => ({
             label: elem
         }));
         quickPick.onDidChangeSelection(([selection]) => __awaiter(this, void 0, void 0, function* () {
             if (selection) {
-                vscode.window.showInformationMessage(selection.label);
                 const result = yield vscode.window.showInputBox({
-                    value: "abcdef",
-                    valueSelection: [2, 4],
-                    placeHolder: "For example: fedcba. But not: 123"
+                    value: "abcdef"
                 });
+                const readme = `## ${result}`;
                 if (selection.label === "React JS") {
                     run(`npx create-react-app ${result}`, options);
-                    console.log("hi");
                 }
                 else if (selection.label === "Django") {
-                    run(`django-admin startproject ${result} && cd ${result} &&django-admin startapp ${result}_app`, options);
+                    run(`django-admin startproject ${result} && cd ${result} &&django-admin startapp ${result}_app`, options).then(() => {
+                        fs.writeFile(path.join(cwd, result, "README.md"), readme, (err) => {
+                            if (err) {
+                                return vscode.window.showErrorMessage("Unexpected Error Occured");
+                            }
+                        });
+                    });
                 }
                 else if (selection.label === "Flutter") {
                     run(`flutter create ${result}`, options);
@@ -79,16 +81,56 @@ function activate(context) {
                     run(`vue create ${result}`, options);
                 }
                 else if (selection.label === "HTML") {
-                    run(`mkdir ${result} && cd ${result}`, options).then(() => {
+                    run(`mkdir ${result} && cd ${result}`, options)
+                        .then(() => {
                         fs.writeFile(path.join(cwd, result, "index.html"), constants_1.htmlString, (err) => {
                             if (err) {
                                 return vscode.window.showErrorMessage("Unexpected Error Occured !");
                             }
                         });
-                    }).then(() => {
+                    })
+                        .then(() => {
                         fs.writeFile(path.join(cwd, result, "style.css"), constants_1.cssString, (err) => {
                             if (err) {
                                 return vscode.window.showErrorMessage("Unexpected Error Code");
+                            }
+                        });
+                    })
+                        .then(() => {
+                        fs.writeFile(path.join(cwd, result, "script.js"), constants_1.scriptString, (err) => {
+                            if (err) {
+                                return vscode.window.showErrorMessage("Unexpected Error Occured");
+                            }
+                        });
+                    })
+                        .then(() => {
+                        fs.writeFile(path.join(cwd, result, "README.md"), readme, (err) => {
+                            if (err) {
+                                return vscode.window.showErrorMessage("Unexpected Error Occured");
+                            }
+                        });
+                    });
+                }
+                else if (selection.label === "Chrome Extension") {
+                    run(`mkdir ${result} && cd ${result}`, options)
+                        .then(() => {
+                        fs.writeFile(path.join(cwd, result, "popup.html"), constants_1.extensionHtml, (err) => {
+                            if (err) {
+                                return vscode.window.showErrorMessage("Unexpected Error Occured !");
+                            }
+                        });
+                    })
+                        .then(() => {
+                        fs.writeFile(path.join(cwd, result, "popup.js"), constants_1.popupJS, (err) => {
+                            if (err) {
+                                return vscode.window.showErrorMessage("Unexpected Error Occured !");
+                            }
+                        });
+                    })
+                        .then(() => {
+                        fs.writeFile(path.join(cwd, result, "README.md"), readme, (err) => {
+                            if (err) {
+                                return vscode.window.showErrorMessage("Unexpected Error Occured");
                             }
                         });
                     });

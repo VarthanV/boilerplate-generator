@@ -12,7 +12,7 @@ exports.htmlString = `
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta http-equiv="X-UA-Compatible" content="ie=edge">
-      <title> ${result} </title>
+      <title> Title </title>
    </head>
    <body>
       <h1 style="text-align: center"> Hello  </h1>
@@ -25,7 +25,6 @@ exports.htmlString = `
    </body>
 </html>
 `;
-exports.readme = ` ## ${result} \n  {} A HTML project `;
 exports.cssString = `
 *{
      box-sizing:border-box;
@@ -33,6 +32,84 @@ exports.cssString = `
      padding:0;
 }
 
+
+`;
+exports.scriptString = `
+window.onload = ()=>{
+
+}
+
+`;
+exports.extensionHtml = `   
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{}</title>
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+      rel="stylesheet"
+      integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
+      crossorigin="anonymous"
+    />
+    <style>
+  
+      html,
+      body {
+        font-family: "Roboto", sans-serif;
+        font-size: 14px;
+        margin: 0;
+        min-height: 180px;
+        padding: 0;
+        width: 384px;
+      }
+      h1 {
+        font-family: "Roboto", monospace;
+        font-size: 22px;
+        font-weight: 400;
+        margin: 0;
+        color:royalblue;
+      }
+     
+      .modal-content {
+        padding: 0 22px;
+        text-align: center;
+        font-size: 30px;
+      }
+   
+      .logo {
+        padding: 16px;
+      }
+    
+      
+     
+     
+    </style>
+    <script src="popup.js"></script>
+  </head>
+  <body>
+    <div class="modal-header">
+      <h1 class="logo" style="text-align: center;">
+         {}
+      </h1>
+    </div>
+    <div class="modal-content">
+      <h1 id ="text"></h1>
+    </div>
+    <script src="popup.js"></script>
+  </body>
+</html>
+`;
+exports.popupJS = `
+
+function disp() {
+    document.getElementById('text').innerHTML = Sample Chrome Extension Project ;
+}
+window.addEventListener('load', disp());
 
 `;
 //# sourceMappingURL=constants.js.map

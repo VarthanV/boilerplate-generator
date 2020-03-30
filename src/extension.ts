@@ -22,7 +22,7 @@ function run(cmd: string, options: any) {
     });
     process.on("exit", (status: any) => {
       if (status) {
-        reject("Eror");
+        reject("Error");
       } else {
         accept();
       }
@@ -46,12 +46,12 @@ export function activate(context: vscode.ExtensionContext) {
     "Chrome Extension"
   ];
   let disposable = vscode.commands.registerCommand(
-    "extension.boilerplate",
+    "extension.helloWorld",
     () => {
       let cwd = vscode.workspace.rootPath;
       const options: any = {};
       options.cwd = cwd;
-      vscode.window.showInformationMessage("Hello Worlddd");
+
 
       const quickPick = vscode.window.createQuickPick();
       quickPick.items = frameWorksSupported.map((elem: string) => ({
@@ -59,14 +59,13 @@ export function activate(context: vscode.ExtensionContext) {
       }));
       quickPick.onDidChangeSelection(async ([selection]: any) => {
         if (selection) {
-          vscode.window.showInformationMessage(selection.label);
           const result = await vscode.window.showInputBox({
             value: "abcdef"
           });
           const readme = `## ${result}`;
           if (selection.label === "React JS") {
             run(`npx create-react-app ${result}`, options);
-            console.log("hi");
+        
           } else if (selection.label === "Django") {
             run(
               `django-admin startproject ${result} && cd ${result} &&django-admin startapp ${result}_app`,
