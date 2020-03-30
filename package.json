@@ -6,7 +6,8 @@
 	"repository": {
         "type": "git",
         "url": "https://github.com/VarthanV/boilerpate-generator"
-    },
+	},
+	"icon":"logo.png",
 	"version": "1.0.0",
 	"engines": {
 		"vscode": "^1.43.0"
